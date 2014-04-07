@@ -50,7 +50,6 @@ class smithsink(gr.sync_block,QtGui.QWidget):
         Qwt.QwtPlot.__init__(self)
 
         self.initUI()
-	self.drawCircles()
     
     def initUI(self):
 		self.setGeometry(0,0,500,500)
