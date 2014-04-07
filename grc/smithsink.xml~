@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<block>
+  <name>smithsink</name>
+  <key>smithchart_smithsink</key>
+  <category>smithchart</category>
+  <import>import smithchart</import>
+  <make>smithchart.smithsink()</make>
+
+  <sink>
+    <name>cpdus</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+</block>
