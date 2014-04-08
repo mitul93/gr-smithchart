@@ -46,6 +46,7 @@ if _RTLD_GLOBAL != 0:
 
 # import any pure python here
 from smithsink import smithsink
+from smithsink_numpy import smithsink_numpy
 #
 
 # ----------------------------------------------------------------

@@ -31,7 +31,8 @@ endif()
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    smithsink.py DESTINATION ${GR_PYTHON_DIR}/smithchart
+    smithsink.py
+    smithsink_numpy.py DESTINATION ${GR_PYTHON_DIR}/smithchart
 )
 
 ########################################################################

@@ -18,5 +18,6 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    smithsink.xml DESTINATION share/gnuradio/grc/blocks
+    smithsink.xml
+    smithchart_smithsink_numpy.xml DESTINATION share/gnuradio/grc/blocks
 )
