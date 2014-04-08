@@ -29,13 +29,11 @@ class my_tb(gr.top_block):
     def __init__(self):
         gr.top_block.__init__(self)
 
-        self.qapp = QtGui.QApplication(sys.argv)
         self.plot = smith.smithsink_numpy()
 
 def main():
     tb = my_tb()
     tb.start()
-    tb.qapp.exec_()
 
 if __name__ == "__main__":
     try:
