@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<block>
+  <name>smithsink_numpy</name>
+  <key>smithchart_smithsink_numpy</key>
+  <category>smithchart</category>
+  <import>import smithchart</import>
+  <make>smithchart.smithsink_numpy()</make>
+</block>
