@@ -19,6 +19,7 @@
 # Boston, MA 02110-1301, USA.
 # 
 
+import math
 import numpy as np
 from gnuradio import gr;
 
@@ -27,19 +28,36 @@ from PyQt4 import QtCore as Qc
 import PyQt4.Qwt5 as Qwt
 
 # data points necessary to draw circles
-center_x = np.zeros(21)	
-center_y = np.zeros(21)
-circle_radii_x = np.zeros(21) 
-circle_radii_y = np.zeros(21) 
-
-# data points to draw Re(Z) circles
-datapoints_x = np.array([1,0.909090909091,0.833333333333,0.769230769231,0.714285714286,0.666666666667,0.625,0.588235294118,
-0.555555555556,0.5,0.454545454545,0.416666666667,0.384615384615,0.357142857143,0.333333333333,0.25,0.2,0.166666666667,0.0909090909091,
-0.047619047619,0.0196078431373])
-
-# data points to draw Im(z) circles
-datapoints_y = np.array([10.0,5.0,3.33333333333,2.5,2.0,1.66666666667,1.42857142857,1.25,1.0,0.833333333333,0.714285714286,0.625,
-0.555555555556,0.5,0.333333333333,0.25,0.2,0.1,0.05,0.02])
+angleOfTransmissionR = np.array([912.0, 911.5, 911.0, 910.5, 910.0,
+                                             909.0, 907.5, 905.5, 903.5, 901.5,
+                                             899.0, 896.0, 892.5, 889.5, 885.5,
+                                             882.5, 878.0, 874.0, 869.0, 863.5,
+                                             858.5, 853.5, 848.0, 842.0, 835.5,
+                                             829.5, 823.0, 816.0, 809.0, 802.0,
+                                             794.0, 786.5, 779.0, 770.5, 762.0,
+                                             754.0, 745.0, 735.5, 726.0, 716.5,
+                                             707.5, 697.0, 687.0, 677.5, 666.5,
+                                             655.0, 645.5, 634.0, 623.0, 612.0,
+                                             600.0, 589.0, 578.0, 566.0, 554.0,
+                                             542.0, 529.5, 517.0, 504.5, 492.0,
+                                             479.0, 466.0, 454.0, 440.5, 427.5,
+                                             414.5, 402.0, 389.0, 375.0, 362.0,
+                                             349.0, 335.0, 322.0, 310.0, 297.0,
+                                             284.0, 271.0, 258.0, 245.0, 232.0,
+                                             223.0, 210.0, 197.0, 188.0, 177.0,
+                                             166.0, 155.0, 146.5, 137.0, 130.0,
+                                             122.0])	
+PI = 3.141592654
+dataVector = Qc.QPointF()
+arcscal = 0
+showInterpolatedLine = 0
+textPen = QtGui.QPen(Qc.Qt.black,0.75)
+thickPen = QtGui.QPen(Qc.Qt.black,0.25)
+thinPen = QtGui.QPen(Qc.Qt.gray,0.25)
+pointDataPen = QtGui.QPen(Qc.Qt.red,4.0,Qc.Qt.SolidLine,Qc.Qt.RoundCap)
+lineDataPen = QtGui.QPen(Qc.Qt.black,0.25)
+thinArcsPath = QtGui.QPainterPath()
+thickArcsPath = QtGui.QPainterPath()
 
 qp = QtGui.QPainter()
 
