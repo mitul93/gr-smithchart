@@ -70,55 +70,140 @@ class smithsink(gr.sync_block,QtGui.QWidget):
         self.initUI()
     
     def initUI(self):
-		self.setGeometry(0,0,500,500)
-		self.setWindowTitle('Smith Chart')		
-		self.show()
+	self.setGeometry(0,0,self.width(),self.height())
+	self.setWindowTitle('Smith Chart')		
+	self.show()
 	
     def paintEvent(self, e):
 		
-		qp.begin(self)
-		self.drawCircles()
-		qp.end()
+	qp.begin(self)
+	qp.setRenderHint(QtGui.QPainter.Antialiasing)
+	qp.setBackground(QtGui.QBrush(QtGui.QColor(255, 255, 255)))
+	qp.fillRect(0, 0, self.width(), self.height(), QtGui.QBrush(QtGui.QColor(255, 255, 255)))
+	side = min(self.width(), self.height())
+	qp.setViewport((self.width()-side)/2, (self.height()-side)/2, side, side)
+	qp.setWindow(-512, -512, 1024, 1024)
+
+	if (arcscal == 0):
+		self.calculateInsideArcs()
+		arcsCalculated = 1
+
+	self.drawCircles()
+	qp.end()
+
+
 
     def drawCircles(self):
 		
-		min_size = min(self.width(),self.height())
-		# Circular region for clipping
-		r1 = QtGui.QRegion(Qc.QRect((self.width() - min_size)/2, (self.height() - min_size)/2, min_size,min_size), 		
-			QtGui.QRegion.Ellipse)
-	        qp.setClipRegion(r1)
+	qp.setPen(thickPen)
+	rectangle = Qc.QRectF(-512, -512, 1024, 1024)
+	qp.drawArc(rectangle, 0, 5760)
+	rectangle.adjust(16, 16, -16, -16)
+	qp.setPen(thinPen)
+	qp.drawArc(rectangle, 0, 5760)
+	
+	# Inner thick circle, wavelengths toward load
+	rectangle.adjust(16, 16, -16, -16)
+	qp.setPen(thickPen)
+	qp.drawArc(rectangle, 0, 5760)
+
+	# Inner thin circle, angle of reflection coefficient in degrees
+	rectangle.adjust(16, 16, -16, -16)
+	qp.setPen(thinPen)
+	qp.drawArc(rectangle, 0, 5760)
+
+	# Inner thick circle, angle of transmission coefficient in degrees
+	rectangle.adjust(16, 16, -16, -16)
+	qp.setPen(thickPen)
+	qp.drawArc(rectangle, 0, 5760)
+
+	for i in range (250):
+		qp.save()
+		qp.rotate(-i*1.44)
+
+		if (i % 5 == 0):
+			qp.setPen(thickPen)
+			qp.drawLine(493, 0, 499, 0)
+		else:
+			qp.setPen(thinPen)
+			qp.drawLine(493, 0, 499, 0)
+		qp.restore()
+
+	for i in range (90,-90,-1):
+		qp.save()
+		qp.rotate(-i*2.0)
+
+		if (i % 5 == 0):
+			qp.setPen(thickPen)
+			qp.drawLine(464, 0, 468, 0)
+		else:
+			qp.setPen(thinPen)
+			qp.drawLine(464, 0, 468, 0)
 		
-		# calculate radius of Re(z) circles from data point
-		for x in range (21):
-			circle_radii_x[x] = min_size*datapoints_x[x]
-			
-		# # calculate radius of Re(z) circles from data point
-		for x in range (20):			
-			circle_radii_y[x] = min_size*datapoints_y[x]
-		
-		pen = QtGui.QPen(Qc.Qt.black, 5, Qc.Qt.SolidLine)
-	        qp.setPen(pen)
-		
-		p = Qc.QPoint(self.width()/2 + min_size/2 - circle_radii_x[0]/2, self.height()/2)
-		qp.drawEllipse(p,circle_radii_x[0]/2, circle_radii_x[0]/2)
-		
-		pen = QtGui.QPen(Qc.Qt.darkGray, 1, Qc.Qt.SolidLine)
-       		qp.setPen(pen)
-		
-		# draw Re(z) circles
-		for x in range (1,21):
-			p = Qc.QPoint(self.width()/2 + min_size/2 - circle_radii_x[x]/2, self.height()/2)
-			qp.drawEllipse(p,circle_radii_x[x]/2, circle_radii_x[x]/2)
-		
-		# draw Im(z) circles
-		for x in range (20):
-			p = Qc.QPoint(self.width()/2 + min_size/2, self.height()/2 - circle_radii_y[x]/2)
-			qp.drawEllipse(p,circle_radii_y[x]/2,circle_radii_y[x]/2)
-			p = Qc.QPoint(self.width()/2 + min_size/2, self.height()/2 + circle_radii_y[x]/2)
-			qp.drawEllipse(p,circle_radii_y[x]/2,circle_radii_y[x]/2)
-		
-		# draw line passing through Y - axis (circle having INFINITE radius)
-		qp.drawLine((self.width()-min_size)/2,min_size/2,(self.width()+min_size)/2,min_size/2)
+		qp.restore()
+
+	qp.setFont(QtGui.QFont("monospace", 8, QtGui.QFont.Light))
+	qp.setPen(textPen)
+
+	for i in range (50):
+		qp.save()
+		qp.rotate(-90)
+		qp.rotate((-i*7.2))
+		if (i == 0):
+			qp.drawText(-14,-595,100,100,
+			                  Qc.Qt.AlignLeft | Qc.Qt.AlignBottom,
+			                  Qc.QString.number(0.0,'f',2))
+		else:
+			qp.drawText(-14,-595,100,100,
+			                  Qc.Qt.AlignLeft | Qc.Qt.AlignBottom,
+			                  Qc.QString.number(0.5-(i*0.01),'f',2))
+
+		qp.drawText(-14,-578,100,100,
+		                  Qc.Qt.AlignLeft | Qc.Qt.AlignBottom,
+		                  Qc.QString.number(i*0.01,'f',2))
+		qp.restore()
+
+	for i in range (18,-18,-1):
+		qp.save()
+		qp.rotate(90)
+		qp.rotate((-i*10.0))
+
+		if (i >= 0):
+			qp.drawText((int)((-4.0/9.0)*i-4),-565,100,100,
+			                  Qc.Qt.AlignLeft | Qc.Qt.AlignBottom,
+			                  Qc.QString.number(i*10))
+		else:
+			qp.drawText((int)((4.0/9.0)*i-10),-565,100,100,
+			                  Qc.Qt.AlignLeft | Qc.Qt.AlignBottom,
+			                  Qc.QString.number(i*10))
+		qp.restore()
+
+	first = Qc.QPointF()
+	second = Qc.QPointF()
+	qp.setPen(thinPen)
+
+	for i in range (91):
+		second.rx = angleOfTransmissionR[i]*math.cos(i*PI/180.0)
+		second.rx -= 448.0
+		second.ry = -angleOfTransmissionR[i]*math.sin(i*PI/180.0)
+		R = math.sqrt((second.rx*second.rx + 448.0) + second.ry*second.ry)
+		first.rx = second.rx - (second.rx * 7.0 / R)
+		first.ry = second.ry - (second.ry * 7.0 / R)
+		qp.drawLine(first, second)
+		first.ry *= -1
+		second.ry *= -1
+		qp.drawLine(first, second)
+
+	qp.setPen(thickPen)
+	qp.drawLine(448, 0, -448, 0)
+	qp.save()
+	qp.setPen(textPen)
+	qp.rotate(-90)
+	qp.drawText(Qc.QPointF(0.0,-438.0), Qc.QString.number(0.0,'f',1))
+	qp.restore()
+	qp.strokePath(thickArcsPath, thickPen)
+	qp.strokePath(thinArcsPath, thinPen)
+
 				
     def work(self, input_items, output_items):
 	        pass
