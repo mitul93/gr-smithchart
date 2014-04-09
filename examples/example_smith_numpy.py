@@ -34,7 +34,11 @@ class my_tb(gr.top_block):
 def main():
     tb = my_tb()
     tb.start()
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 4949571b408105ce782cea60dde4597f63520a22
 if __name__ == "__main__":
     try:
         main()
