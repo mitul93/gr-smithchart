@@ -91,6 +91,68 @@ class smithsink(gr.sync_block,QtGui.QWidget):
 	self.drawCircles()
 	qp.end()
 
+    def drawConstantZArc(self, pen, z, angle, span):
+
+	topLeftX = 0
+
+	topLeftX = ((z*z)-1.0)/((z+1.0)*(z+1.0))
+	topLeftX = topLeftX*224.0
+
+	rectangle = Qc.QRectF(2.0*topLeftX,-224.0+topLeftX,
+	                          448.0-2.0*topLeftX,448.0-2.0*topLeftX)
+
+	rectangle = rectangle.normalized()
+
+	if(pen == thinPen):
+	
+		thinArcsPath.arcMoveTo(rectangle, angle)
+		thinArcsPath.arcTo(rectangle, angle, span)
+	
+	else:
+	
+		thickArcsPath.arcMoveTo(rectangle, angle)
+		thickArcsPath.arcTo(rectangle, angle, span)
+	
+
+	if(pen == thinPen):
+	
+		thinArcsPath.arcMoveTo(rectangle, -angle)
+		thinArcsPath.arcTo(rectangle, -angle, -span)
+	
+	else:
+	
+		thickArcsPath.arcMoveTo(rectangle, -angle)
+		thickArcsPath.arcTo(rectangle, -angle, -span)
+	
+    def drawConstantRoArc(self, pen, ro, startAngle, span):
+	
+	topLeftX = (1.0-(1.0/ro))*448.0
+	topLeftY = 896.0*(1.0/ro)
+	rectangle = Qc.QRectF(topLeftX,-topLeftY,topLeftY, topLeftY)
+	rectangle = rectangle.normalized()
+	
+	if(pen == thinPen):
+	
+		thinArcsPath.arcMoveTo(rectangle, startAngle)
+		thinArcsPath.arcTo(rectangle, startAngle, span)
+	
+	else:
+	
+		thickArcsPath.arcMoveTo(rectangle, startAngle)
+		thickArcsPath.arcTo(rectangle, startAngle, span)
+	
+	rectangle.setRect(topLeftX, 0.0, topLeftY, topLeftY)
+	rectangle = rectangle.normalized()
+
+	if(pen == thinPen):
+	
+		thinArcsPath.arcMoveTo(rectangle, -startAngle)
+		thinArcsPath.arcTo(rectangle, -startAngle, -span)
+
+	else:
+		thickArcsPath.arcMoveTo(rectangle, -startAngle)
+		thickArcsPath.arcTo(rectangle, -startAngle, -span)
+
 
 
     def drawCircles(self):
