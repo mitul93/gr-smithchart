@@ -28,4 +28,4 @@ To run this code do following
 - [ ] incorporate stream tags or message to display result
 - [ ] add major and minor grid
 
-![ScreenShot](https://raw.githubusercontent.com/mitul93/gr-smithchart/master/smithchart_snapshot_070414.jpg)
+![ScreenShot](https://raw.githubusercontent.com/mitul93/gr-smithchart/master/smithchart_snapshot_090414.jpg)
