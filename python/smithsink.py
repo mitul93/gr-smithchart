@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 # 
 # Copyright 2014 Mitul Vekariya <vekariya93@gmail.com>.
-# 
+# Inspired by the work of Lisandro DamiÃ¡n Nicanor PÃ©rez Meyer <perezmeyer@gmail.com> 
+#
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3, or (at your option)
