@@ -75,7 +75,7 @@ class smithsink(gr.sync_block,QtGui.QWidget):
 	self.show()
 	
     def paintEvent(self, e):
-		
+	qp = QtGui.QPainter()
 	qp.begin(self)
 	qp.setRenderHint(QtGui.QPainter.Antialiasing)
 	qp.setBackground(QtGui.QBrush(QtGui.QColor(255, 255, 255)))
