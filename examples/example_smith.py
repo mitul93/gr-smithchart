@@ -19,7 +19,7 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-from gnuradio import gr
+from gnuradio import gr, blocks
 #from gnuradio.qtgui import qtgui
 import smithchart as smith
 from PyQt4 import QtGui
@@ -31,10 +31,12 @@ class my_tb(gr.top_block):
 
         # Make a local QtApp so we can start it from our side
         self.qapp = QtGui.QApplication(sys.argv)
-
+	
+	src_data = (1.0+0j, 0.1+0.3j, 0.3+1.5j, 0.3-1.0j, 1.4+1.4j, 0.1-0.3j)
+	self.src = blocks.vector_source_c(src_data)
         self.plot = smith.smithsink()
+	self.connect(self.src,self.plot)
 
-        # Tell the sink we want it displayed
 def main():
     tb = my_tb()
     tb.start()
