@@ -20,12 +20,12 @@ To run this code do following
 
 - [x] created skeleton for smith chart using pyQT
 - [x] created example to check the compatibility with GNU Radio
+- [X] implement method to draw points on graph
+- [X] add major and minor grid
 
 ####Todo:
 
-- [ ] implement method to draw points on graph
 - [ ] implement method to draw contineous graph from given points
 - [ ] incorporate stream tags or message to display result
-- [ ] add major and minor grid
 
-![ScreenShot](https://raw.githubusercontent.com/mitul93/gr-smithchart/master/smithchart_snapshot_090414.jpg)
+![ScreenShot](https://raw.githubusercontent.com/mitul93/gr-smithchart/master/smithchart_snapshot_190414.png)
