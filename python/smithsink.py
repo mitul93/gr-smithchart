@@ -88,7 +88,7 @@ class smithsink(gr.sync_block,QtGui.QWidget):
 		self.calculateInsideArcs()
 		arcsCalculated = 1
 
-	self.drawCircles()
+	self.drawCircles(qp)
 	qp.end()
 
     def drawConstantZArc(self, pen, z, angle, span):
@@ -560,7 +560,7 @@ class smithsink(gr.sync_block,QtGui.QWidget):
 	self.drawConstantRoArc(thickPen, 50.0, 92.0, 178.0)
 
 
-    def drawCircles(self):
+    def drawCircles(self,qp):
 		
 	qp.setPen(thickPen)
 	rectangle = Qc.QRectF(-512, -512, 1024, 1024)
@@ -671,8 +671,26 @@ class smithsink(gr.sync_block,QtGui.QWidget):
 	qp.strokePath(thickArcsPath, thickPen)
 	qp.strokePath(thinArcsPath, thinPen)
 
+	qp.setPen(pointDataPen)
+	for i in range (dataVector.size()):
+		qp.drawPoint(dataVector.at(i))
+
+    def displayData(self, real, imaginary):
+
+	x = ((real*real)+(imaginary*imaginary)-1.0)
+	x = x / ((real+1.0)*(real+1.0)+(imaginary*imaginary))
+	x = x * 448.0
+	'''
+	Note that the y coordinate gets inverted, that is because the graphic
+	coordinates are inverted.
+	'''
+	y = 2.0*imaginary/((real+1)*(real+1)+(imaginary*imaginary))
+	y = -y * 448.0
+
+	dataVector.append(Qc.QPointF(x, y))
 				
     def work(self, input_items, output_items):
-	        pass
+	for i in range (input_items[0].size):
+		self.displayData(input_items[0].item(i).real, input_items[0].item(i).imag)		
 
 
