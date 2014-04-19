@@ -54,17 +54,17 @@ showInterpolatedLine = 0
 textPen = QtGui.QPen(Qc.Qt.black,0.75)
 thickPen = QtGui.QPen(Qc.Qt.black,0.25)
 thinPen = QtGui.QPen(Qc.Qt.gray,0.25)
-pointDataPen = QtGui.QPen(Qc.Qt.red,4.0,Qc.Qt.SolidLine,Qc.Qt.RoundCap)
+pointDataPen = QtGui.QPen(Qc.Qt.red,6.0,Qc.Qt.SolidLine,Qc.Qt.RoundCap)
 lineDataPen = QtGui.QPen(Qc.Qt.black,0.25)
 thinArcsPath = QtGui.QPainterPath()
 thickArcsPath = QtGui.QPainterPath()
 
-qp = QtGui.QPainter()
+dataVector = QtGui.QPolygonF()
 
 class smithsink(gr.sync_block,QtGui.QWidget):
     
     def __init__(self,blkname="smithchart"):
-        gr.sync_block.__init__(self,blkname,[],[])
+        gr.sync_block.__init__(self,blkname,in_sig = [np.complex64], out_sig = [], )
         Qwt.QwtPlot.__init__(self)
 
         self.initUI()
